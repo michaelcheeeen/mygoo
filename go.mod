@@ -1,3 +1,3 @@
-module github.com/erda/go-web
+module github.com/erda/goo
 
 go 1.19
