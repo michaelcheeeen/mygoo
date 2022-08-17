@@ -1,0 +1,24 @@
+version: "1.1"
+stages:
+  - stage:
+      - git-checkout:
+          alias: git-checkout
+  - stage:
+      - golang:
+          alias: go-demo
+          params:
+            command: go build -o web-server main.go
+            context: ${git-checkout}
+            service: web-server
+  - stage:
+      - release:
+          alias: release
+          params:
+            dice_yml: ${git-checkout}/dice.yml
+            image:
+              go-demo: ${go-demo:OUTPUT:image}
+  - stage:
+      - dice:
+          alias: dice
+          params:
+            release_id: ${release:OUTPUT:releaseID}
